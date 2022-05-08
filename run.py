@@ -13,4 +13,34 @@ with open('account_logs.txt', 'r') as logs:
     for logs in data:
         log = logs.split(':') # Split data where there is a :
         account_logs.append(log) # Add each log to the list
-    print(account_logs)
+    
+    
+    for log in account_logs:
+        '''
+        Loop through account_logs list checking whether
+        a transaction is a Deposit,Withdraw or Transfer
+
+        Deposit - Increment account balance by amount:
+            Bal = 0 , Deposit = 100
+            Return Bal + Deposit ; 100
+
+        Withdraw - Check account balance, if amount is 
+        enough reduce the bal:
+            Bal = 500 , Withdraw = 300
+            Return Bal-Withdraw ; 200
+
+        Transfer - Check account balance, if amount is 
+        enought reduce bal and increase bal for other acc
+            Bal acc A = 900, Transfer = 500
+            Return Bal acc A Bal-Transfer ; 400
+            
+            Bal acc B = 200 , Transfer = 500
+            Return Bal acc B Bal+Transfer ; 700
+        '''
+        
+        if log[0] == 'DEPOSIT':
+            # ['DEPOSIT', 'Wanjiru', '152.00\n']
+            if log[1] in BALANCES:
+                amount = float(BALANCES[log[1]]) + float(log[2])
+                BALANCES[log[1]] = amount
+    print(BALANCES)
