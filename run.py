@@ -38,9 +38,29 @@ with open('account_logs.txt', 'r') as logs:
             Return Bal acc B Bal+Transfer ; 700
         '''
         
+        # BALANCES = {'Wanjiru':0, 'Juma':0, 'Linda':0}
         if log[0] == 'DEPOSIT':
-            # ['DEPOSIT', 'Wanjiru', '152.00\n']
+            # List sample - ['DEPOSIT', 'Wanjiru', '152.00\n']
             if log[1] in BALANCES:
+                # float for decimal numbers
                 amount = float(BALANCES[log[1]]) + float(log[2])
                 BALANCES[log[1]] = amount
-    print(BALANCES)
+                print('Deposit successful:', BALANCES)
+
+        elif log[0] == 'WITHDRAW' and log[1] in BALANCES:
+            if float(BALANCES[log[1]]) >= float(log[2]):
+                amount = float(BALANCES[log[1]]) - float(log[2])
+                BALANCES[log[1]] = amount
+                print('Withdrawal successful:', BALANCES)
+            else:
+                print('Insufficient balance:', BALANCES)
+        elif log[0] == 'TRANSFER' and log[1] in BALANCES and log[2] in BALANCES:
+            # List sample - ['TRANSFER', 'Juma', 'Linda', '500.00\n']
+            if float(BALANCES[log[1]]) >= float(log[3]):
+                BALANCES[log[1]] = float(BALANCES[log[1]])-float(log[3])
+                BALANCES[log[2]] = float(BALANCES[log[2]])+float(log[3])
+                print('Transfer successful:', BALANCES)
+            else:
+                print('Insufficient balance:', BALANCES)
+    print("\n")
+    print('Final balances: ',BALANCES)
